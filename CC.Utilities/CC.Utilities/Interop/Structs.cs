@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace CC.Utilities.Interop
 {
+    //TODO: Add comments ...
     // ReSharper disable InconsistentNaming
 
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Auto)]

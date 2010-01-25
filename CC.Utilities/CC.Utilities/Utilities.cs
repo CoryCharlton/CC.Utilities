@@ -4,13 +4,26 @@ using CC.Utilities.Interop;
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// General utility methods that don't seem to fit under another namespace
+    /// </summary>
     public static class Utilities
     {
+        #region Public Methods
+        /// <summary>
+        /// Captures an <see cref="Image"/> of the screen
+        /// </summary>
+        /// <returns>An <see cref="Image"/> of the screen</returns>
         public static Image CaptureScreen()
         {
             return CaptureWindow(User32.GetDesktopWindow());
         }
 
+        /// <summary>
+        /// Captures an <see cref="Image"/> of the specified window
+        /// </summary>
+        /// <param name="handle">The handle of the window to capture</param>
+        /// <returns>An <see cref="Image"/> of the specified window</returns>
         public static Image CaptureWindow(IntPtr handle)
         {
 
@@ -36,5 +49,6 @@ namespace CC.Utilities
 
             return image;
         }
+        #endregion
     }
 }

@@ -5,8 +5,12 @@ using System.Windows.Forms;
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// Contains extension methods for <see cref="Image"/>
+    /// </summary>
     public static class ImageExtensions
     {
+        #region Public Static Methods
         /// <summary>
         /// Creates a new <see cref="Image"/> with an adjusted brightness.
         /// </summary>
@@ -108,9 +112,15 @@ namespace CC.Utilities
             }
         }
 
+        /// <summary>
+        /// Gets a rectangle that corresponds to the height and width of the <see cref="Image"/>
+        /// </summary>
+        /// <param name="image">The <see cref="Image"/> to work with</param>
+        /// <returns>A <see cref="Rectangle"/> that corresponds to the height and width of the <see cref="Image"/></returns>
         public static Rectangle GetRectangle(this Image image)
         {
             return new Rectangle(0, 0, image.Width, image.Height);
         }
+        #endregion
     }
 }

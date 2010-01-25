@@ -2,6 +2,9 @@
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// Contains extension methods for <see cref="TimeSpan"/>
+    /// </summary>
     public static class TimeSpanExtensions
     {
         /// <summary>

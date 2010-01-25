@@ -5,9 +5,18 @@ using System.Text;
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// Provides simple <see cref="RijndaelManaged"/> Decrypt() and Encrypt() methods. 
+    /// <see cref="SimpleEncryption"/> is preferred over the static <see cref="Encryption"/>
+    /// class if you will be performing many Decrypt/Encrypt calls using the same password.
+    /// </summary>
     public class SimpleEncryption
     {
         #region Constructor
+        /// <summary>
+        /// Creates a new <see cref="SimpleEncryption"/> instance.
+        /// </summary>
+        /// <param name="password">The password used to Decrypt/Encrypt data</param>
         public SimpleEncryption(string password)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
@@ -19,20 +28,28 @@ namespace CC.Utilities
         }
         #endregion
 
+        #region Private Constants
+        private const string InitVector = "T=A4rAzu94ez-dra";
+        private const int PasswordIterations = 1000; //2;
+        private const string SaltValue = "d=?ustAF=UstenAr3B@pRu8=ner5sW&h59_Xe9P2za-eFr2fa&ePHE@ras!a+uc@";
+        #endregion
+
         #region Private Fields
         private readonly Rfc2898DeriveBytes _DeriveBytes;
         private readonly byte[] _InitVectorBytes;
         private readonly byte[] _KeyBytes;
         #endregion
 
-        private const string InitVector = "T=A4rAzu94ez-dra";
-        private const int PasswordIterations = 1000; //2;
-        private const string SaltValue = "d=?ustAF=UstenAr3B@pRu8=ner5sW&h59_Xe9P2za-eFr2fa&ePHE@ras!a+uc@";
-
+        #region Public Methods
+        /// <summary>
+        /// Decrypts the encrypted text
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text to decrypt</param>
+        /// <returns>The plain text decrypted</returns>
         public string Decrypt(string encryptedText)
         {
 #if DEBUG
-            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Decrypt");
+            DateTime enterTime = Logging.EnterMethod("CC.Utilities.SimpleEncryption.Decrypt");
 #endif
             byte[] encryptedTextBytes = Convert.FromBase64String(encryptedText);
             string plainText;
@@ -67,10 +84,15 @@ namespace CC.Utilities
             return plainText;
         }
 
+        /// <summary>
+        /// Encrypts the plain text
+        /// </summary>
+        /// <param name="plainText">The plain text to encrypt</param>
+        /// <returns>The encrypted text</returns>
         public string Encrypt(string plainText)
         {
 #if DEBUG
-            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Encrypt");
+            DateTime enterTime = Logging.EnterMethod("CC.Utilities.SimpleEncryption.Encrypt");
 #endif
             string encryptedText;
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
@@ -97,5 +119,6 @@ namespace CC.Utilities
 #endif
             return encryptedText;
         }
+        #endregion
     }
 }

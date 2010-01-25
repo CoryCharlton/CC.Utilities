@@ -4,14 +4,14 @@ using System.Xml.Serialization;
 namespace CC.Utilities
 {
     /// <summary>
-    /// Contains common extension methods
+    /// Contains extension methods for <see cref="object"/>
     /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
-        /// Converts and object to a serialized Xml string
+        /// Converts an object to a serialized xml string
         /// </summary>
-        /// <param name="o"></param>
+        /// <param name="o">The <see cref="object"/> to serialize</param>
         /// <returns></returns>
         public static string ToXml(this object o)
         {

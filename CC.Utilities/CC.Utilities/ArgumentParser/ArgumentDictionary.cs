@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace CC.Utilities
 {
-    public class ArgumentDictionary: IEnumerable<Argument>
+    //TODO: Needs comments...
+
+    public class ArgumentDictionary : IEnumerable<Argument>
     {
         #region Constructor
         public ArgumentDictionary()

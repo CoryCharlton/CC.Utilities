@@ -4,6 +4,11 @@ using System.Text;
 
 namespace CC.Utilities
 {
+    //TODO: Needs comments...
+
+    /// <summary>
+    /// <see cref="ArgumentParser"/> allows the user to easily parse command line arguments.
+    /// </summary>
     public class ArgumentParser
     {
         #region Constructor

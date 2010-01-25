@@ -1,96 +1,76 @@
 ﻿using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// Provides simple <see cref="RijndaelManaged"/> Decrypt() and Encrypt() methods using a static implementation of <see cref="SimpleEncryption"/>
+    /// </summary>
     public static class Encryption
     {
-        private const string InitVector = "T=A4rAzu94ez-dra";
-        private const int KeySize = 256;
-        private const int PasswordIterations = 1000; //2;
-        private const string SaltValue = "d=?ustAF=UstenAr3B@pRu8=ner5sW&h59_Xe9P2za-eFr2fa&ePHE@ras!a+uc@";
+        #region Private Static Fields
+        private static string _HashedPassword = string.Empty;
+        // ReSharper disable InconsistentNaming
+        private static MD5 _MD5;
+        // ReSharper restore InconsistentNaming
+        private static SimpleEncryption _SimpleEncryption;
+        #endregion
 
-        public static string Decrypt(string encryptedText, string passPhrase)
+        #region Private Methods
+        private static void BuildSimpleEncryption(string password)
+        {
+            if (_MD5 == null)
+            {
+                _MD5 = MD5.Create();
+            }
+
+            string hashedPassword = Encoding.UTF8.GetString(_MD5.ComputeHash(Encoding.UTF8.GetBytes(password)));
+
+            if (_SimpleEncryption == null || !hashedPassword.Equals(_HashedPassword))
+            {
+                _HashedPassword = hashedPassword;
+                _SimpleEncryption = new SimpleEncryption(password);
+            }
+        }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Decrypts the encrypted text
+        /// </summary>
+        /// <param name="encryptedText">The encrypted text to decrypt</param>
+        /// <param name="password">The password used to decrypt the text</param>
+        /// <returns>The plain text decrypted</returns>
+        public static string Decrypt(string encryptedText, string password)
         {
 #if DEBUG
-            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Decrypt");
+            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Encryption.Decrypt");
 #endif
-            byte[] encryptedTextBytes = Convert.FromBase64String(encryptedText);
-            byte[] initVectorBytes = Encoding.UTF8.GetBytes(InitVector);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(passPhrase);
-            string plainText;
-            byte[] saltValueBytes = Encoding.UTF8.GetBytes(SaltValue);
-
-            Rfc2898DeriveBytes password = new Rfc2898DeriveBytes(passwordBytes, saltValueBytes, PasswordIterations);
-            byte[] keyBytes = password.GetBytes(KeySize / 8);
-
-            RijndaelManaged rijndaelManaged = new RijndaelManaged { Mode = CipherMode.CBC };
-
-            try
-            {
-                using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(keyBytes, initVectorBytes))
-                {
-                    using (MemoryStream memoryStream = new MemoryStream(encryptedTextBytes))
-                    {
-                        using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                        {
-                            //TODO: Need to look into this more. Assuming encrypted text is longer than plain but there is probably a better way
-                            byte[] plainTextBytes = new byte[encryptedTextBytes.Length];
-
-                            int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-                            plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
-                        }
-                    }
-                }
-            }
-            catch (CryptographicException)
-            {
-                plainText = string.Empty; // Assume the error is caused by an invalid password
-            }
-
+            BuildSimpleEncryption(password);
 #if DEBUG
-            Logging.ExitMethod("CC.Utilities.Decrypt", enterTime);
+            Logging.ExitMethod("CC.Utilities.Encryption.Decrypt", enterTime);
 #endif
-            return plainText;
+            return _SimpleEncryption.Decrypt(encryptedText);
         }
 
-        public static string Encrypt(string plainText, string passPhrase)
+        /// <summary>
+        /// Encrypts the plain text
+        /// </summary>
+        /// <param name="plainText">The plain text to encrypt</param>
+        /// <param name="password">The password used to encrypt the text</param>
+        /// <returns>The encrypted text</returns>
+        public static string Encrypt(string plainText, string password)
         {
 #if DEBUG
-            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Encrypt");
+            DateTime enterTime = Logging.EnterMethod("CC.Utilities.Encryption.Encrypt");
 #endif
-            string encryptedText;
-            byte[] initVectorBytes = Encoding.UTF8.GetBytes(InitVector);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(passPhrase);
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            byte[] saltValueBytes = Encoding.UTF8.GetBytes(SaltValue);
-
-            Rfc2898DeriveBytes password = new Rfc2898DeriveBytes(passwordBytes, saltValueBytes, PasswordIterations);
-            byte[] keyBytes = password.GetBytes(KeySize / 8);
-
-            RijndaelManaged rijndaelManaged = new RijndaelManaged {Mode = CipherMode.CBC};
-
-            using (ICryptoTransform encryptor = rijndaelManaged.CreateEncryptor(keyBytes, initVectorBytes))
-            {
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-                        cryptoStream.FlushFinalBlock();
-
-                        byte[] cipherTextBytes = memoryStream.ToArray();
-                        encryptedText = Convert.ToBase64String(cipherTextBytes);
-                    }
-                }
-            }
-
+            BuildSimpleEncryption(password);
 #if DEBUG
-            Logging.ExitMethod("CC.Utilities.Encrypt", enterTime);
+            Logging.ExitMethod("CC.Utilities.Encryption.Encrypt", enterTime);
 #endif
-            return encryptedText;
+            return _SimpleEncryption.Encrypt(plainText);
         }
+        #endregion
     }
 }

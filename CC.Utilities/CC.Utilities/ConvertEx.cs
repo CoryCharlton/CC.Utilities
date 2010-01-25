@@ -2,8 +2,16 @@
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// A collection of conversion methods.
+    /// </summary>
     public static class ConvertEx
     {
+        /// <summary>
+        /// Converts a native COLORREF to a <see cref="Color"/>
+        /// </summary>
+        /// <param name="colorRef">The native COLORREF to convert</param>
+        /// <returns>A <see cref="Color"/></returns>
         public static Color ColorRefToColor(uint colorRef)
         {
             byte r = (byte)(colorRef);
@@ -35,29 +43,15 @@ namespace CC.Utilities
             return length*dpi;
         }
 
+        /// <summary>
+        /// Converts inches to twips
+        /// </summary>
+        /// <param name="inches">The length of inches to convert</param>
+        /// <returns>The number of twips</returns>
         public static float InchesToTwips(float inches)
         {
             return inches*1440;
         }
-
-        /*
-        public static string NullTerminatedCharArrayToString(char[] charArray)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            foreach (char c in charArray)
-            {
-                if (c == 0)
-                {
-                    break;
-                }
-
-                stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString();
-        }
-        */
 
         /// <summary>
         /// Convert points to twips

@@ -57,6 +57,7 @@
     <Compile Include="ArgumentParser\ArgumentDictionary.cs" />
     <Compile Include="ArgumentParser\ArgumentParser.cs" />
     <Compile Include="ConvertEx.cs" />
+    <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="SimpleEncryption.cs" />
     <Compile Include="Drawing\DoubleBufferedGraphics.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

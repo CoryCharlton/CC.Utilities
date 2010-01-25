@@ -141,7 +141,7 @@ namespace CC.Utilities
 
             if (detailed)
             {
-                returnValue = string.Format("{0} [HasPrefix: {1} IsValid: {2}]", returnValue, HasPrefix, IsValid);
+                returnValue = string.Format("[HasPrefix: {0,5} | IsValid: {1,5}] {2}", HasPrefix, IsValid, returnValue);
             }
 
             return returnValue;

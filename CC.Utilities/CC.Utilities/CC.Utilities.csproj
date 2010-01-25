@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ArgumentParser\Argument.cs" />
     <Compile Include="ArgumentParser\ArgumentDictionary.cs" />
+    <Compile Include="ArgumentParser\ArgumentDictionaryEnumerator.cs" />
     <Compile Include="ArgumentParser\ArgumentParser.cs" />
     <Compile Include="ConvertEx.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />

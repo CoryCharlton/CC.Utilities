@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace CC.Utilities
 {
     //TODO: Needs comments...
 
-    public class ArgumentDictionary : IEnumerable<Argument>
+    public class ArgumentDictionary : IDictionary<string, Argument>
     {
         #region Constructor
         public ArgumentDictionary()
@@ -47,6 +48,20 @@ namespace CC.Utilities
             get { return _Keys.Count; }
         }
 
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public ICollection<string> Keys
+        {
+            get { return _Keys.ToList(); }
+        }
+
+        public ICollection<Argument> Values
+        {
+            get { return _Values.ToList(); }
+        }
         #endregion
 
         #region Protected Methods
@@ -76,6 +91,17 @@ namespace CC.Utilities
             OnDictionaryChanged(EventArgs.Empty);
         }
 
+        public void Add(string key, Argument value)
+        {
+            // NOTE: Should I confirm key == value.Name?
+            Add(value);
+        }
+
+        public void Add(KeyValuePair<string, Argument> item)
+        {
+            Add(item.Value);
+        }
+
         public void AddRange(IEnumerable<Argument> arguments)
         {
             foreach (Argument argument in arguments)
@@ -102,12 +128,36 @@ namespace CC.Utilities
             return Contains(argument.Name);
         }
 
-        public IEnumerator<Argument> GetEnumerator()
+        public bool Contains(KeyValuePair<string, Argument> item)
         {
-            return _Values.GetEnumerator();
+            return Contains(item.Value.Name);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public bool ContainsKey(string argumentName)
+        {
+            return Contains(argumentName);
+        }
+
+        public void CopyTo(KeyValuePair<string, Argument>[] array, int arrayIndex)
+        {
+            if ((Count + arrayIndex + 1) > array.Length)
+            {
+                int difference = (Count + arrayIndex + 1) - array.Length;
+                Array.Resize(ref array, array.Length + difference);
+            }
+
+            for (int i = 0; i < _Values.Count; i++)
+            {
+                array[arrayIndex + i] = new KeyValuePair<string, Argument>(_Values[i].Name, _Values[i]);
+            }
+        }
+
+        public IEnumerator<KeyValuePair<string, Argument>> GetEnumerator()
+        {
+            return new ArgumentDictionaryEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -156,6 +206,11 @@ namespace CC.Utilities
         public bool Remove(Argument argument)
         {
             return Remove(argument.Name);
+        }
+
+        public bool Remove(KeyValuePair<string, Argument> item)
+        {
+            return Remove(item.Value);
         }
 
         public void RemoveAt(int index)

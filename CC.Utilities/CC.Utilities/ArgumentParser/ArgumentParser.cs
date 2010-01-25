@@ -4,34 +4,54 @@ using System.Text;
 
 namespace CC.Utilities
 {
-    //TODO: Needs comments...
-
     /// <summary>
     /// <see cref="ArgumentParser"/> allows the user to easily parse command line arguments.
     /// </summary>
     public class ArgumentParser
     {
         #region Constructor
+        /// <summary>
+        /// Creates a new <see cref="ArgumentParser"/>.
+        /// </summary>
         public ArgumentParser() : this(CommonPrefixes, false, null)
         {
             // Empty Method
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ArgumentParser"/>.
+        /// </summary>
+        /// <param name="prefixes">The list of valid prefixes.</param>
         public ArgumentParser(IEnumerable<string> prefixes) : this(prefixes, false, null)
         {
             // Empty Method
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ArgumentParser"/>.
+        /// </summary>
+        /// <param name="requirePrefix">True if valid <see cref="Argument"/>s require a prefix.</param>
         public ArgumentParser(bool requirePrefix) : this(CommonPrefixes, requirePrefix, null)
         {
             // Empty Method
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ArgumentParser"/>.
+        /// </summary>
+        /// <param name="prefixes">The list of valid prefixes.</param>
+        /// <param name="requirePrefix">True if valid <see cref="Argument"/>s require a prefix.</param>
         public ArgumentParser(IEnumerable<string> prefixes, bool requirePrefix) : this(prefixes, requirePrefix, null)
         {
             // Empty Method
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ArgumentParser"/>.
+        /// </summary>
+        /// <param name="prefixes">The list of valid prefixes.</param>
+        /// <param name="requirePrefix">True if valid <see cref="Argument"/>s require a prefix.</param>
+        /// <param name="allowedArguments">The list of allowed <see cref="Argument"/>s.</param>
         public ArgumentParser(IEnumerable<string> prefixes, bool requirePrefix, IEnumerable<Argument> allowedArguments)
         {
             if (prefixes != null)
@@ -68,22 +88,34 @@ namespace CC.Utilities
         #endregion
 
         #region Public Properties
+        /// <summary>
+        /// The list of allowed <see cref="Argument"/>s
+        /// </summary>
         public ArgumentDictionary AllowedArguments
         {
             get { return _AllowedArguments; }
         }
 
+        /// <summary>
+        /// The <see cref="Argument"/>s parsed from the <see cref="Parse"/> method.
+        /// </summary>
         public ArgumentDictionary ParsedArguments
         {
             get { return _ParsedArguments; }
         }
 
+        /// <summary>
+        /// The list of valid prefixes.
+        /// </summary>
         public List<string> Prefixes
         {
             get { return _Prefixes; }
             set { _Prefixes = value; }
         }
 
+        /// <summary>
+        /// True if valid <see cref="Argument"/>s require a prefix.
+        /// </summary>
         public bool RequirePrefix
         {
             get { return _RequirePrefix; } 
@@ -100,6 +132,9 @@ namespace CC.Utilities
         #endregion
 
         #region Public Static Properties
+        /// <summary>
+        /// A list of common prefixes.
+        /// </summary>
         public static string[] CommonPrefixes
         {
             get { return _CommonPrefixes; }
@@ -161,7 +196,7 @@ namespace CC.Utilities
 
         private void SetArgumentIsValid()
         {
-            foreach (Argument argument in ParsedArguments)
+            foreach (Argument argument in ParsedArguments.Values)
             {
                 SetArgumentIsValid(argument);
             }
@@ -200,11 +235,19 @@ namespace CC.Utilities
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Add an allowed <see cref="Argument"/>.
+        /// </summary>
+        /// <param name="argumentName">The argument name.</param>
         public void AddAllowedArgument(string argumentName)
         {
             AddAllowedArgument(new Argument(argumentName, true));
         }
 
+        /// <summary>
+        /// Add an allowed <see cref="Argument"/>.
+        /// </summary>
+        /// <param name="argument">The <see cref="Argument"/>.</param>
         public void AddAllowedArgument(Argument argument)
         {
             string argumentName = argument.Name;
@@ -212,6 +255,10 @@ namespace CC.Utilities
             AllowedArguments.Add(new Argument(argumentName, argument.ArgumentValue, true));
         }
 
+        /// <summary>
+        /// Parse the array of command line arguments.
+        /// </summary>
+        /// <param name="args">The array of command line arguments.</param>
         public void Parse(string[] args)
         {
             _ParsedArguments.Clear();
@@ -253,11 +300,20 @@ namespace CC.Utilities
             }
         }
 
+        /// <summary>
+        /// Returns this <see cref="ParsedArguments"/> in a human readable format.
+        /// </summary>
+        /// <returns>A <see cref="string"/>.</returns>
         public override string ToString()
         {
             return ToString(false);
         }
 
+        /// <summary>
+        /// Returns this <see cref="ParsedArguments"/> in a human readable format.
+        /// </summary>
+        /// <param name="detailed">True if the output should be detailed.</param>
+        /// <returns>A <see cref="string"/>.</returns>
         public string ToString(bool detailed)
         {
             StringBuilder returnValue = new StringBuilder();
@@ -269,21 +325,21 @@ namespace CC.Utilities
                 returnValue.AppendLine("Valid Arguments:");
                 returnValue.AppendLine();
 
-                foreach (Argument validArgument in validArguments)
+                foreach (Argument validArgument in validArguments.Values)
                 {
-                    returnValue.AppendLine(validArgument.ToString(detailed));
+                    returnValue.AppendLine(" " + validArgument.ToString(detailed));
                 }
             }
-
+            
             if (invalidArguments.Count > 0)
             {
                 returnValue.AppendLine();
                 returnValue.AppendLine("Invalid Arguments:");
                 returnValue.AppendLine();
 
-                foreach (Argument invalidArgument in invalidArguments)
+                foreach (Argument invalidArgument in invalidArguments.Values)
                 {
-                    returnValue.AppendLine(invalidArgument.ToString(detailed));
+                    returnValue.AppendLine(" " + invalidArgument.ToString(detailed));
                 }
             }
 

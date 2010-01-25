@@ -54,6 +54,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentParser\ArgumentDictionaryTest.cs" />
+    <Compile Include="ArgumentParser\ArgumentParserTest.cs" />
+    <Compile Include="ArgumentParser\ArgumentTest.cs" />
     <Compile Include="Extensions\ColorExtensionsTest.cs" />
     <Compile Include="ConvertExTest.cs" />
     <Compile Include="Extensions\DateTimeExtensionsTest.cs" />

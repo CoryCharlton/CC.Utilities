@@ -257,8 +257,8 @@ namespace CC.Utilities.Tests
         {
             ArgumentDictionary target = new ArgumentDictionary(); // TODO: Initialize to an appropriate value
             IEnumerator<Argument> expected = null; // TODO: Initialize to an appropriate value
-            IEnumerator<Argument> actual;
-            actual = target.GetEnumerator();
+            IEnumerator<Argument> actual = null;
+            //actual = target.GetEnumerator();
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }

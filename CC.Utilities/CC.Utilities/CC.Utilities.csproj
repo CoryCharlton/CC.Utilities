@@ -60,6 +60,7 @@
     <Compile Include="ArgumentParser\ArgumentDictionaryEnumerator.cs" />
     <Compile Include="ArgumentParser\ArgumentParser.cs" />
     <Compile Include="ConvertEx.cs" />
+    <Compile Include="DirectoryEx.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="SimpleEncryption.cs" />
     <Compile Include="Drawing\DoubleBufferedGraphics.cs" />

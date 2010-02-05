@@ -49,6 +49,29 @@ namespace CC.Utilities
 
             return image;
         }
+
+        /// <summary>
+        /// A generic TryParse() method.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> of the </typeparam>
+        /// <param name="text"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool TryParse<T>(string text, out T value)
+        {
+            value = default(T);
+
+            try
+            {
+                value = (T)Convert.ChangeType(text, typeof(T));
+                return true;
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }

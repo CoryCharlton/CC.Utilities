@@ -60,7 +60,10 @@
     <Compile Include="ArgumentParser\ArgumentDictionaryEnumerator.cs" />
     <Compile Include="ArgumentParser\ArgumentParser.cs" />
     <Compile Include="ConvertEx.cs" />
+    <Compile Include="CsvParser.cs" />
     <Compile Include="DirectoryEx.cs" />
+    <Compile Include="Extensions\DataRowExtension.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
     <Compile Include="SimpleEncryption.cs" />
     <Compile Include="Drawing\DoubleBufferedGraphics.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Encryption.cs" />
+    <Compile Include="ThreadSafeQueue.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

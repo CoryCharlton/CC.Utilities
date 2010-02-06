@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 
 namespace CC.Utilities
 {
@@ -97,7 +98,7 @@ namespace CC.Utilities
                 }
                 else
                 {
-                    returnValue.Rows.Add(returnValue.NewRow(currentRow));
+                    returnValue.Rows.Add(returnValue.NewRow(currentRow.ToArray()));
                 }
 
                 currentRowIndex++;

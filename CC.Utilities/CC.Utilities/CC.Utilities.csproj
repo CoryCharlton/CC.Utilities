@@ -65,6 +65,11 @@
     <Compile Include="Extensions\DataRowExtension.cs" />
     <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\FontExtensions.cs" />
+    <Compile Include="Extensions\XmlNodeExtensions.cs" />
+    <Compile Include="Rss\RssChannel.cs" />
+    <Compile Include="Rss\RssEnclosure.cs" />
+    <Compile Include="Rss\RssFeed.cs" />
+    <Compile Include="Rss\RssItem.cs" />
     <Compile Include="SimpleEncryption.cs" />
     <Compile Include="Drawing\DoubleBufferedGraphics.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

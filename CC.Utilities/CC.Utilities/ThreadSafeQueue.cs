@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CC.Utilities
 {
@@ -48,6 +49,7 @@ namespace CC.Utilities
         /// Removes and returns the object at the beggining of the <see cref="ThreadSafeQueue{T}"/>
         /// </summary>
         /// <returns></returns>
+        //[Obsolete("Use ThreadSafeQueue<T>.TryDequeue() instead.")]
         public new T Dequeue()
         {
             T returnValue;
@@ -81,6 +83,35 @@ namespace CC.Utilities
             {
                 base.TrimExcess();
             }
+        }
+
+        /// <summary>
+        /// Attempts to remove and return the object at the beggining of the <see cref="ThreadSafeQueue{T}"/>
+        /// </summary>
+        /// <param name="item">The <see cref="T"/> to return</param>
+        /// <returns></returns>
+        public bool TryDequeue(out T item)
+        {
+            bool returnValue = false;
+            item = default(T);
+
+            lock (_LockObject)
+            {
+                if (base.Count > 0)
+                {
+                    //try
+                    //{
+                        item = base.Dequeue();
+                        returnValue = true;
+                    //}
+                    //catch (InvalidOperationException exception)
+                    //{
+                    //    Logging.LogException(exception);
+                    //}
+                }
+            }
+
+            return returnValue;
         }
         #endregion
     }

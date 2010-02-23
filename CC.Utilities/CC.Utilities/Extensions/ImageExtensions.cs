@@ -93,9 +93,6 @@ namespace CC.Utilities
         /// <returns>0 if the images are the same, -1 if the image size differs, 1 if the pixels are different.</returns>
         public static int Compare(this Image image, Image other)
         {
-#if DEBUG
-            DateTime enterTime = Logging.EnterMethod("Image.Compare()");
-#endif
             int returnValue = 0;
 
             if (image == null && other == null)
@@ -169,9 +166,6 @@ namespace CC.Utilities
                 */
             }
 
-#if DEBUG
-            Logging.ExitMethod("Image.Compare()", enterTime);
-#endif
             return returnValue;
         }
 

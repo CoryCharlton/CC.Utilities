@@ -15,6 +15,9 @@ namespace CC.Utilities.Interop
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowDC(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowLong([In] IntPtr hWnd, [In] int nIndex);
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetWindowRect(IntPtr hWnd, [Out] RECT rect);
 
@@ -49,8 +52,14 @@ namespace CC.Utilities.Interop
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetParent([In] IntPtr hWndChild, [In] IntPtr hWndNewParent);
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern int SetScrollInfo(IntPtr hwnd, UInt32 fnBar, [In, Out] SCROLLINFO lpsi, bool fRedraw);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWindowLong([In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

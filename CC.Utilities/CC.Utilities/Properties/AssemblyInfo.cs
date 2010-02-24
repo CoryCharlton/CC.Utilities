@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CC.Utilities")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A collection of utility classes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Cory Charlton")]
+[assembly: AssemblyCompany("CC Software Engineering")]
 [assembly: AssemblyProduct("CC.Utilities")]
-[assembly: AssemblyCopyright("Copyright © Cory Charlton 2009-2010")]
+[assembly: AssemblyCopyright("Copyright ©  2008-2010 CC Software Engineering (Cory Charlton)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.10.208")]
-[assembly: AssemblyFileVersion("1.0.10.208")]
+[assembly: AssemblyVersion("1.0.10.223")]
+[assembly: AssemblyFileVersion("1.0.10.223")]

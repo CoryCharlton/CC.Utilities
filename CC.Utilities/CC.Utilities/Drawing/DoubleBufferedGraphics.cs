@@ -27,7 +27,6 @@ namespace CC.Utilities.Drawing
         #endregion
 
         #region Private Fields
-        private Image _MemoryBitmap;
         #endregion
 
         #region Public Properties
@@ -46,8 +45,13 @@ namespace CC.Utilities.Drawing
         /// </summary>
         public bool Initialized
         {
-            get { return (_MemoryBitmap != null); }
+            get { return (MemoryImage != null); }
         }
+
+        /// <summary>
+        /// The underlying <see cref="Image"/>
+        /// </summary>
+        public Image MemoryImage { get; private set; }
 
         /// <summary>
         /// The width.
@@ -61,10 +65,10 @@ namespace CC.Utilities.Drawing
         /// </summary>
         public void Dispose()
         {
-            if (_MemoryBitmap != null)
+            if (MemoryImage != null)
             {
-                _MemoryBitmap.Dispose();
-                _MemoryBitmap = null;
+                MemoryImage.Dispose();
+                MemoryImage = null;
             }
 
             if (Graphics != null)
@@ -99,9 +103,9 @@ namespace CC.Utilities.Drawing
         /// <param name="graphics"></param>
         public void Render(Graphics graphics)
         {
-            if (_MemoryBitmap != null)
+            if (MemoryImage != null)
             {
-                graphics.DrawImage(_MemoryBitmap, _MemoryBitmap.GetRectangle(), 0, 0, Width, Height, GraphicsUnit.Pixel);
+                graphics.DrawImage(MemoryImage, MemoryImage.GetRectangle(), 0, 0, Width, Height, GraphicsUnit.Pixel);
             }
         }
 
@@ -110,10 +114,10 @@ namespace CC.Utilities.Drawing
         /// </summary>
         public void Reset()
         {
-            if (_MemoryBitmap != null)
+            if (MemoryImage != null)
             {
-                _MemoryBitmap.Dispose();
-                _MemoryBitmap = null;
+                MemoryImage.Dispose();
+                MemoryImage = null;
             }
 
             if (Graphics != null)
@@ -122,8 +126,8 @@ namespace CC.Utilities.Drawing
                 Graphics = null;
             }
 
-            _MemoryBitmap = new Bitmap(Width, Height);
-            Graphics = Graphics.FromImage(_MemoryBitmap);
+            MemoryImage = new Bitmap(Width, Height);
+            Graphics = Graphics.FromImage(MemoryImage);
         }
 
         /// <summary>
@@ -136,10 +140,10 @@ namespace CC.Utilities.Drawing
         /// <param name="image">The image to draw.</param>
         public void SetBackgroundImage(Image image)
         {
-            if (_MemoryBitmap != null)
+            if (MemoryImage != null)
             {
-                _MemoryBitmap.Dispose();
-                _MemoryBitmap = null;
+                MemoryImage.Dispose();
+                MemoryImage = null;
             }
 
             if (Graphics != null)
@@ -148,11 +152,11 @@ namespace CC.Utilities.Drawing
                 Graphics = null;
             }
 
-            _MemoryBitmap = image.Clone() as Image;
+            MemoryImage = image.Clone() as Image;
 
-            if (_MemoryBitmap != null)
+            if (MemoryImage != null)
             {
-                Graphics = Graphics.FromImage(_MemoryBitmap);
+                Graphics = Graphics.FromImage(MemoryImage);
             }
         }
         #endregion

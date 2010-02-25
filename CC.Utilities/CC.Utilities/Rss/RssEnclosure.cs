@@ -1,13 +1,26 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace CC.Utilities.Rss
 {
     /// <summary>
     /// Represents a RSS enclosure.
     /// </summary>
-    public class RssEnclosure
+    [Serializable, XmlRoot("enclosure")]
+    public class RssEnclosure: IEquatable<RssEnclosure>
     {
         #region Constructor
+        /// <summary>
+        /// Create a new <see cref="RssEnclosure"/>.
+        /// </summary>
+        public RssEnclosure()
+        {
+            Length = -1;
+            Type = string.Empty;
+            Url = string.Empty;
+        }
+
         /// <summary>
         /// Create a new <see cref="RssEnclosure"/> from a <see cref="XmlNode"/>.
         /// </summary>
@@ -34,17 +47,31 @@ namespace CC.Utilities.Rss
         /// <summary>
         /// The length
         /// </summary>
-        public long Length { get; protected set; }
+        public long Length { get; set; }
 
         /// <summary>
         /// The type
         /// </summary>
-        public string Type { get; protected set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The url
         /// </summary>
-        public string Url { get; protected set; }
+        public string Url { get; set; }
+        #endregion
+
+        #region Public Methods
+        public bool Equals(RssEnclosure other)
+        {
+            bool returnValue = false;
+
+            if (other != null && Length.Equals(other.Length) && Type.Equals(other.Type) && Url.Equals(other.Url))
+            {
+                returnValue = true;
+            }
+
+            return returnValue;
+        }
         #endregion
     }
 }

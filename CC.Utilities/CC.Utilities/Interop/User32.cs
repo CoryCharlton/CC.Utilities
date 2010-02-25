@@ -3,9 +3,22 @@ using System.Runtime.InteropServices;
 
 namespace CC.Utilities.Interop
 {
+    /// <summary>
+    /// Contains Native Windows API from user32.dll
+    /// </summary>
     public static class User32
     {
         // ReSharper disable InconsistentNaming
+        /// <summary>
+        /// The GetClientRect function retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
+        /// </summary>
+        /// <param name="hWnd">[in] Handle to the window whose client coordinates are to be retrieved.</param>
+        /// <param name="lpRect">[out] A <see cref="RECT"/> that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetClientRect([In] IntPtr hWnd, [Out] RECT lpRect);
+
         [DllImport("user32.dll")]
         public static extern IntPtr GetDesktopWindow();
 

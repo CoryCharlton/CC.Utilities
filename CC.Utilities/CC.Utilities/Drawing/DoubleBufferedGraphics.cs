@@ -15,14 +15,19 @@ namespace CC.Utilities.Drawing
         public DoubleBufferedGraphics() : this(0, 0) { }
 
         /// <summary>
-        /// Creates a new <see cref="DoubleBufferedGraphics"/> using the specified width and height.
+        /// Creates a new <see cref="DoubleBufferedGraphics"/> using the specified <see cref="System.Drawing.Size"/>.
         /// </summary>
         /// <param name="width">The width</param>
         /// <param name="height">The height</param>
-        public DoubleBufferedGraphics(int width, int height)
+        public DoubleBufferedGraphics(int width, int height) : this(new Size(width, height)) { }
+
+        /// <summary>
+        /// Creates a new <see cref="DoubleBufferedGraphics"/> using the specified <see cref="System.Drawing.Size"/>.
+        /// </summary>
+        /// <param name="size">The size</param>
+        public DoubleBufferedGraphics(Size size)
         {
-            Height = height;
-            Width = width;
+            Size = size;
         }
         #endregion
 
@@ -36,14 +41,9 @@ namespace CC.Utilities.Drawing
         public Graphics Graphics { get; private set; }
 
         /// <summary>
-        /// The height.
-        /// </summary>
-        public int Height { get; private set; }
-
-        /// <summary>
         /// True if the <see cref="DoubleBufferedGraphics"/> is initialized.
         /// </summary>
-        public bool Initialized
+        public bool IsInitialized
         {
             get { return (MemoryImage != null); }
         }
@@ -54,9 +54,9 @@ namespace CC.Utilities.Drawing
         public Image MemoryImage { get; private set; }
 
         /// <summary>
-        /// The width.
+        /// The <see cref="System.Drawing.Size"/>.
         /// </summary>
-        public int Width { get; private set; }
+        public Size Size { get; private set; }
         #endregion
 
         #region Public Methods
@@ -81,31 +81,39 @@ namespace CC.Utilities.Drawing
         /// <summary>
         /// Initialize this <see cref="DoubleBufferedGraphics"/>.
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="width">The width</param>
+        /// <param name="height">The height</param>
         public void Initialize(int width, int height)
         {
-            if (height > 0 && width > 0)
-            {
-                if ((height != Height) || (width != Width))
-                {
-                    Height = height;
-                    Width = width;
+            Initialize(new Size(width, height));
+        }
 
+        /// <summary>
+        /// Initialize this <see cref="DoubleBufferedGraphics"/>.
+        /// </summary>
+        /// <param name="size">The size</param>
+        public void Initialize(Size size)
+        {
+            if (size.Height > 0 && size.Width > 0)
+            {
+                if (size != Size)
+                {
+                    Size = size;
                     Reset();
                 }
             }
         }
 
         /// <summary>
-        /// Draw this <see cref="DoubleBufferedGraphics"/> to the supplied <see cref="Graphics"/>.
+        /// Draw this <see cref="DoubleBufferedGraphics"/> to the supplied <see cref="System.Drawing.Graphics"/>
         /// </summary>
         /// <param name="graphics"></param>
         public void Render(Graphics graphics)
         {
             if (MemoryImage != null)
             {
-                graphics.DrawImage(MemoryImage, MemoryImage.GetRectangle(), 0, 0, Width, Height, GraphicsUnit.Pixel);
+                // TODO: I think the rectangles are backwards on this. Should it autoscale?
+                graphics.DrawImage(MemoryImage, MemoryImage.GetRectangle(), 0, 0, Size.Width, Size.Height, GraphicsUnit.Pixel);
             }
         }
 
@@ -126,14 +134,14 @@ namespace CC.Utilities.Drawing
                 Graphics = null;
             }
 
-            MemoryImage = new Bitmap(Width, Height);
+            MemoryImage = new Bitmap(Size.Width, Size.Height);
             Graphics = Graphics.FromImage(MemoryImage);
         }
 
         /// <summary>
         /// This method is the preferred method of drawing a background image.
         /// It is *MUCH* faster than any of the Graphics.DrawImage() methods.
-        /// Warning: The memory image and the <see cref="Graphics"/> object
+        /// Warning: The memory image and the <see cref="System.Drawing.Graphics"/> object
         /// will be reset after calling this method. This should be your first
         /// drawing operation.
         /// </summary>

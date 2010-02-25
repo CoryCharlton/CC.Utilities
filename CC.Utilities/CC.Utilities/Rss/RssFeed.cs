@@ -29,16 +29,8 @@ namespace CC.Utilities.Rss
         /// <param name="uri">The <see cref="Uri"/> to the RSS feed</param>
         public RssFeed(Uri uri)
         {
-            try
-            {
-                Uri = uri;
-                LoadRssFeed();
-            }
-            catch (Exception exception)
-            {
-                Logging.LogException(exception);
-                ParseRssFeed(GenerateErrorRssFeed(exception));
-            }
+            Uri = uri;
+            LoadRssFeed();
         }
         #endregion
 
@@ -51,6 +43,11 @@ namespace CC.Utilities.Rss
         /// The <see cref="RssChannel"/>s
         /// </summary>
         public IList<RssChannel> Channels { get { return _Channels.AsReadOnly(); } }
+
+        /// <summary>
+        /// Indicates wether or not an error occured while loading the RSS feed
+        /// </summary>
+        public bool IsError { get; private set; }
 
         /// <summary>
         /// The last updated
@@ -71,21 +68,33 @@ namespace CC.Utilities.Rss
         #region Private Methods
         private void LoadRssFeed()
         {
-            using (WebClient webClient = new WebClient())
+            try
             {
-                webClient.Headers.Add("user-agent", string.Format("{0}/{1} (http://www.ccswe.com)", Application.ProductName, Application.ProductVersion));
-
-                using (Stream stream = webClient.OpenRead(Uri))
+                using (WebClient webClient = new WebClient())
                 {
-                    using (XmlTextReader xmlTextReader = new XmlTextReader(stream))
-                    {
-                        XmlDocument xmlDocument = new XmlDocument();
-                        xmlDocument.Load(xmlTextReader);
+                    webClient.Headers.Add("user-agent", string.Format("{0}/{1} (http://www.ccswe.com)", Application.ProductName, Application.ProductVersion));
 
-                        ParseRssFeed(xmlDocument);
-                        LastUpdated = DateTime.Now;
+                    using (Stream stream = webClient.OpenRead(Uri))
+                    {
+                        using (XmlTextReader xmlTextReader = new XmlTextReader(stream))
+                        {
+                            XmlDocument xmlDocument = new XmlDocument();
+                            xmlDocument.Load(xmlTextReader);
+
+                            ParseRssFeed(xmlDocument);
+                            LastUpdated = DateTime.Now;
+                        }
                     }
                 }
+
+                IsError = false;
+            }
+            catch (Exception exception)
+            {
+                Logging.LogException(exception);
+                ParseRssFeed(GenerateErrorRssFeed(exception));
+
+                IsError = true;
             }
         }
 
@@ -112,7 +121,6 @@ namespace CC.Utilities.Rss
             
             if (xmlWriter != null)
             {
-                
                 xmlWriter.WriteStartElement("rss");
                 xmlWriter.WriteAttributeString("version", "2.0");
                 xmlWriter.WriteStartElement("channel");
@@ -175,22 +183,8 @@ namespace CC.Utilities.Rss
         /// <returns>true if the <see cref="RssFeed"/> was refreshed; false otherwise.</returns>
         public bool Refresh()
         {
-            bool returnValue;
-            List<RssChannel> oldChannels = _Channels;
-            
-            try
-            {
-                LoadRssFeed();
-                returnValue = true;
-            }
-            catch (Exception exception)
-            {
-                Logging.LogException(exception);
-                _Channels = oldChannels;
-                returnValue = false;
-            }
-
-            return returnValue;
+            LoadRssFeed();
+            return !IsError;
         }
         #endregion
     }

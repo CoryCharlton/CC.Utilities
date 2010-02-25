@@ -70,6 +70,7 @@
     <Compile Include="Rss\RssEnclosure.cs" />
     <Compile Include="Rss\RssFeed.cs" />
     <Compile Include="Rss\RssItem.cs" />
+    <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SimpleEncryption.cs" />
     <Compile Include="Drawing\DoubleBufferedGraphics.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />

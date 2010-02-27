@@ -35,7 +35,7 @@ namespace CC.Utilities.Rss
         #endregion
 
         #region Private Fields
-        private List<RssChannel> _Channels = new List<RssChannel>();
+        private readonly List<RssChannel> _Channels = new List<RssChannel>();
         #endregion
 
         #region Public Properties
@@ -76,10 +76,10 @@ namespace CC.Utilities.Rss
 
                     using (Stream stream = webClient.OpenRead(Uri))
                     {
-                        using (XmlTextReader xmlTextReader = new XmlTextReader(stream))
+                        using (XmlReader xmlReader = XmlReader.Create(stream))
                         {
                             XmlDocument xmlDocument = new XmlDocument();
-                            xmlDocument.Load(xmlTextReader);
+                            xmlDocument.Load(xmlReader);
 
                             ParseRssFeed(xmlDocument);
                             LastUpdated = DateTime.Now;

@@ -1,9 +1,11 @@
-﻿using CC.Utilities;
+﻿using CC.Utilities.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
 
 namespace CC.Utilities.Tests
 {
+    //TODO: Add test for FromFontNames method
+
     /// <summary>
     ///This is a test class for FontBuilderTest and is intended
     ///to contain all FontBuilderTest Unit Tests

@@ -78,7 +78,7 @@
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="FontBuilder.cs" />
+    <Compile Include="Drawing\FontBuilder.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Interop\InteropConstants.cs" />
     <Compile Include="Interop\Enums.cs" />

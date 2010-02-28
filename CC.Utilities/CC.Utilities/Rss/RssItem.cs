@@ -8,7 +8,7 @@ namespace CC.Utilities.Rss
     /// Represents an Item element in an RSS 2.0 XML document.
     /// </summary>
     [Serializable, XmlRoot("item")]
-    public class RssItem: IEquatable<RssItem>
+    public class RssItem : IEquatable<RssItem>
     {
         #region Constructor
         /// <summary>
@@ -94,19 +94,48 @@ namespace CC.Utilities.Rss
         {
             bool returnValue = false;
 
-            if (other != null && Author.Equals(other.Author) && Category.Equals(other.Category) && Comments.Equals(other.Comments) && Description.Equals(other.Description) && Guid.Equals(other.Guid) && Link.Equals(other.Link) && Title.Equals(other.Title))
+            if (other != null && (Author == other.Author) && (Category == other.Category) && (Comments == other.Comments) && (Description == other.Description) && (Enclosure == other.Enclosure) && (Guid == other.Guid) && (Link == other.Link) && (Title == other.Title))
             {
-                if (Enclosure != null && Enclosure.Equals(other.Enclosure))
-                {
-                    returnValue = true;
-                }
-                else if (Enclosure == null && other.Enclosure == null)
-                {
-                    returnValue = true;                    
-                }
+                returnValue = true;
+                //if (Enclosure != null && Enclosure.Equals(other.Enclosure))
+                //{
+                //    returnValue = true;
+                //}
+                //else if (Enclosure == null && other.Enclosure == null)
+                //{
+                //    returnValue = true;
+                //}
             }
 
             return returnValue;
+        }
+        #endregion
+
+        #region Public Operators
+        /// <summary>
+        /// Determines if both <see cref="RssItem"/> are equal
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static bool operator ==(RssItem x, RssItem y)
+        {
+            if ((object)x == null)
+            {
+                return (object)y == null;
+            }
+            return x.Equals(y);
+        }
+
+        /// <summary>
+        /// Determines if both <see cref="RssItem"/> are not equal
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static bool operator !=(RssItem x, RssItem y)
+        {
+            return !(x == y);
         }
         #endregion
     }

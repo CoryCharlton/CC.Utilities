@@ -8,7 +8,7 @@ namespace CC.Utilities.Rss
     /// Represents a RSS enclosure.
     /// </summary>
     [Serializable, XmlRoot("enclosure")]
-    public class RssEnclosure: IEquatable<RssEnclosure>
+    public class RssEnclosure : IEquatable<RssEnclosure>
     {
         #region Constructor
         /// <summary>
@@ -71,6 +71,34 @@ namespace CC.Utilities.Rss
             }
 
             return returnValue;
+        }
+        #endregion
+
+        #region Public Operators
+        /// <summary>
+        /// Determines if both <see cref="RssEnclosure"/> are equal
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static bool operator ==(RssEnclosure x, RssEnclosure y)
+        {
+            if ((object)x == null)
+            {
+                return (object)y == null;
+            }
+            return x.Equals(y);
+        }
+
+        /// <summary>
+        /// Determines if both <see cref="RssEnclosure"/> are not equal
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static bool operator !=(RssEnclosure x, RssEnclosure y)
+        {
+            return !(x == y);
         }
         #endregion
     }

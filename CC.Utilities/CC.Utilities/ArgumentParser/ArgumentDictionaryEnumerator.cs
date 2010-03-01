@@ -3,9 +3,16 @@ using System.Collections.Generic;
 
 namespace CC.Utilities
 {
+    /// <summary>
+    /// An <see cref="IEnumerator{T}" for <see cref="ArgumentDictionary"/>/>
+    /// </summary>
     public class ArgumentDictionaryEnumerator: IEnumerator<KeyValuePair<string, Argument>>
     {
         #region Constructor
+        /// <summary>
+        /// Creates a new <see cref="ArgumentDictionaryEnumerator"/>
+        /// </summary>
+        /// <param name="argumentDictionary">The <see cref="ArgumentDictionary"/> to enumerate</param>
         public ArgumentDictionaryEnumerator(ArgumentDictionary argumentDictionary)
         {
             _ArgumentDictionary = argumentDictionary;

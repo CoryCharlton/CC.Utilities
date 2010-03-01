@@ -7,8 +7,17 @@ namespace CC.Utilities
     /// </summary>
     public enum ArgumentValue
     {
+        /// <summary>
+        /// None
+        /// </summary>
         None,
+        /// <summary>
+        /// Optional
+        /// </summary>
         Optional,
+        /// <summary>
+        /// Required
+        /// </summary>
         Required
     }
 

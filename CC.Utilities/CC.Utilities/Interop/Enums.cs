@@ -164,5 +164,13 @@ namespace CC.Utilities.Interop
         CONTEXTMENU = 0x007B,
         PRINTCLIENT = 0x0318,
     }
+
+    /// <summary>
+    /// Window styles
+    /// </summary>
+    public enum WS: uint
+    {
+        CHILD = 0x40000000,
+    }
     // ReSharper restore InconsistentNaming
 }

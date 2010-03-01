@@ -43,34 +43,73 @@ namespace CC.Utilities.Rss
         }
         #endregion
 
+        #region Private Fields
+        private int _HashCode;
+        private long _Length = -1;
+        private string _Type;
+        private string _Url;
+        #endregion
+
         #region Public Properties
         /// <summary>
         /// The length
         /// </summary>
-        public long Length { get; set; }
+        public long Length
+        {
+            get { return _Length; }
+            set { _Length = value; SetHashCode();}
+        }
 
         /// <summary>
         /// The type
         /// </summary>
-        public string Type { get; set; }
+        public string Type
+        {
+            get { return _Type; }
+            set { _Type = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The url
         /// </summary>
-        public string Url { get; set; }
+        public string Url
+        {
+            get { return _Url; }
+            set { _Url = value; SetHashCode(); }
+        }
+        #endregion
+
+        #region Private Methods
+        private void SetHashCode()
+        {
+            _HashCode = (_Length + _Type + _Url).GetHashCode();
+        }
         #endregion
 
         #region Public Methods
-        public bool Equals(RssEnclosure other)
+        public override bool Equals(object obj)
         {
-            bool returnValue = false;
-
-            if (other != null && Length.Equals(other.Length) && Type.Equals(other.Type) && Url.Equals(other.Url))
+            if (obj is RssEnclosure)
             {
-                returnValue = true;
+                return Equals(obj as RssEnclosure);
             }
 
-            return returnValue;
+            return false;
+        }
+
+        public bool Equals(RssEnclosure other)
+        {
+            return (other != null && (Length == other.Length) && (Type == other.Type) && (Url == other.Url));
+        }
+
+        public override int GetHashCode()
+        {
+            return _HashCode;
+        }
+
+        public override string ToString()
+        {
+            return (_Length + " " + _Type + " " + _Url);
         }
         #endregion
 

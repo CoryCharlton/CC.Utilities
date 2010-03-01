@@ -47,67 +47,118 @@ namespace CC.Utilities.Rss
         }
         #endregion
 
+        #region Private Fields
+        private string _Author;
+        private string _Category;
+        private string _Comments;
+        private string _Description;
+        private RssEnclosure _Enclosure;
+        private string _Guid;
+        private int _HashCode;
+        private string _Link;
+        private string _Title;
+        #endregion
+
         #region Public Properties
         /// <summary>
         /// The author
         /// </summary>
-        public string Author { get; set; }
+        public string Author
+        {
+            get { return _Author; }
+            set { _Author = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The category
         /// </summary>
-        public string Category { get; set; }
+        public string Category
+        {
+            get { return _Category; }
+            set { _Category = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The comments
         /// </summary>
-        public string Comments { get; set; }
+        public string Comments
+        {
+            get { return _Comments; }
+            set { _Comments = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The description
         /// </summary>
-        public string Description { get; set; }
+        public string Description
+        {
+            get { return _Description; }
+            set { _Description = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The <see cref="RssEnclosure"/>
         /// </summary>
-        public RssEnclosure Enclosure { get; set; }
+        public RssEnclosure Enclosure
+        {
+            get { return _Enclosure; }
+            set { _Enclosure = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The guid
         /// </summary>
-        public string Guid { get; set; }
+        public string Guid
+        {
+            get { return _Guid; }
+            set { _Guid = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The link
         /// </summary>
-        public string Link { get; set; }
+        public string Link
+        {
+            get { return _Link; }
+            set { _Link = value; SetHashCode(); }
+        }
 
         /// <summary>
         /// The title
         /// </summary>
-        public string Title { get; set; }
+        public string Title
+        {
+            get { return _Title; }
+            set { _Title = value; SetHashCode(); }
+        }
         #endregion
 
-        #region Public Methods
-        public bool Equals(RssItem other)
+        #region Private Methods
+        private void SetHashCode()
         {
-            bool returnValue = false;
-
-            if (other != null && (Author == other.Author) && (Category == other.Category) && (Comments == other.Comments) && (Description == other.Description) && (Enclosure == other.Enclosure) && (Guid == other.Guid) && (Link == other.Link) && (Title == other.Title))
+            _HashCode = (_Author + _Category + _Comments + _Description + _Enclosure + _Guid + _Link + _Title).GetHashCode();
+        }
+        #endregion
+        
+        #region Public Methods
+        public override bool Equals(object obj)
+        {
+            if (obj is RssItem)
             {
-                returnValue = true;
-                //if (Enclosure != null && Enclosure.Equals(other.Enclosure))
-                //{
-                //    returnValue = true;
-                //}
-                //else if (Enclosure == null && other.Enclosure == null)
-                //{
-                //    returnValue = true;
-                //}
+                return Equals(obj as RssItem);
             }
 
-            return returnValue;
+            return false;
+        }
+        
+        public bool Equals(RssItem other)
+        {
+            return (other != null && (Author == other.Author) && (Category == other.Category) && (Comments == other.Comments) && (Description == other.Description) && (Enclosure == other.Enclosure) && (Guid == other.Guid) && (Link == other.Link) && (Title == other.Title));
+        }
+
+        public override int GetHashCode()
+        {
+            return _HashCode;
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CC.Utilities
@@ -84,7 +85,8 @@ namespace CC.Utilities
         #endregion
 
         #region Private Static Fields
-        private static readonly string[] _CommonPrefixes = new [] {"-", "--", "/"};
+        private static readonly List<string> _CommonPrefixes = new List<string> { "-", "--", "/" };
+        private static readonly List<string> _CommonSplitters = new List<string> { ":", "=" }; //NOTE: In preperation for possibly making the parameter split charaters a configurable property
         #endregion
 
         #region Public Properties
@@ -135,9 +137,17 @@ namespace CC.Utilities
         /// <summary>
         /// A list of common prefixes.
         /// </summary>
-        public static string[] CommonPrefixes
+        public static IList<string> CommonPrefixes
         {
-            get { return _CommonPrefixes; }
+            get { return _CommonPrefixes.AsReadOnly(); }
+        }
+
+        /// <summary>
+        /// A list of common parameter splitters.
+        /// </summary>
+        public static IList<string> CommonSplitters
+        {
+            get { return _CommonSplitters; }
         }
         #endregion
 
@@ -169,8 +179,10 @@ namespace CC.Utilities
             return returnValue;
         }
 
-        private bool GetArgumentNameWithoutPrefix(ref string argumentName)
+        private bool GetArgumentNameWithoutPrefix(ref string argumentName, out string parameter)
         {
+            parameter = default(string);
+            argumentName = argumentName.Trim();
             string prefix = string.Empty;
 
             for (int j = 0; j < Prefixes.Count; j++)
@@ -188,6 +200,34 @@ namespace CC.Utilities
 
             if (!string.IsNullOrEmpty(prefix))
             {
+                //TODO: Should the be configurable properties like Prefixes?
+                int colonIndex = argumentName.IndexOf(":");
+                int equalsIndex = argumentName.IndexOf("=");
+
+                if (colonIndex > 0 || equalsIndex > 0)
+                {
+                    int lowerIndex = -1;
+
+                    if (colonIndex > 0 && equalsIndex > 0)
+                    {
+                        lowerIndex = (colonIndex < equalsIndex) ? colonIndex : equalsIndex;
+                    }
+                    else if (colonIndex > 0)
+                    {
+                        lowerIndex = colonIndex;
+                    }
+                    else if (equalsIndex > 0)
+                    {
+                        lowerIndex = equalsIndex;
+                    }
+
+                    if (lowerIndex > 0)
+                    {
+                        parameter = argumentName.Substring(lowerIndex + 1).Trim();
+                        argumentName = argumentName.Substring(0, lowerIndex).Trim();
+                    }
+                }
+
                 argumentName = argumentName.Substring(prefix.Length, argumentName.Length - prefix.Length);
             }
 
@@ -251,7 +291,8 @@ namespace CC.Utilities
         public void AddAllowedArgument(Argument argument)
         {
             string argumentName = argument.Name;
-            GetArgumentNameWithoutPrefix(ref argumentName);
+            string parameter;
+            GetArgumentNameWithoutPrefix(ref argumentName, out parameter);
             AllowedArguments.Add(new Argument(argumentName, argument.ArgumentValue, true));
         }
 
@@ -262,22 +303,29 @@ namespace CC.Utilities
         public void Parse(string[] args)
         {
             _ParsedArguments.Clear();
-            
+            List<string> arguments = args.ToList();
+
             Argument lastArgumentWithPrefix = null;
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < arguments.Count; i++)
             {
-                string currentValue = args[i];
+                string currentValue = arguments[i];
+                string parameter;
 
-                if (GetArgumentNameWithoutPrefix(ref currentValue))
+                if (GetArgumentNameWithoutPrefix(ref currentValue, out parameter))
                 {
+                    if (!string.IsNullOrEmpty(parameter))
+                    {
+                        arguments.Insert(i + 1, parameter);
+                    }
+
                     lastArgumentWithPrefix = BuildArgument(currentValue, true);
                    
                     ParsedArguments.Add(lastArgumentWithPrefix);
                 }
                 else
                 {
-                    bool addArgument = true;
+                    bool addArgument = !string.IsNullOrEmpty(currentValue);
 
                     if (lastArgumentWithPrefix != null)
                     {

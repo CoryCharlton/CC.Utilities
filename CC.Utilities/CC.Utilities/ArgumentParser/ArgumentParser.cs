@@ -200,31 +200,25 @@ namespace CC.Utilities
 
             if (!string.IsNullOrEmpty(prefix))
             {
+                List<int> splitterIndexes = new List<int>();
+
                 //TODO: Should the be configurable properties like Prefixes?
-                int colonIndex = argumentName.IndexOf(":");
-                int equalsIndex = argumentName.IndexOf("=");
-
-                if (colonIndex > 0 || equalsIndex > 0)
+                foreach (string splitter in CommonSplitters)
                 {
-                    int lowerIndex = -1;
+                    int splitterIndex = argumentName.IndexOf(splitter);
+                    if (splitterIndex > 0)
+                    {
+                        splitterIndexes.Add(splitterIndex);
+                    }
+                }
 
-                    if (colonIndex > 0 && equalsIndex > 0)
+                if (splitterIndexes.Count > 0)
+                {
+                    int lowestIndex = splitterIndexes.Min();
+                    if (lowestIndex > 0)
                     {
-                        lowerIndex = (colonIndex < equalsIndex) ? colonIndex : equalsIndex;
-                    }
-                    else if (colonIndex > 0)
-                    {
-                        lowerIndex = colonIndex;
-                    }
-                    else if (equalsIndex > 0)
-                    {
-                        lowerIndex = equalsIndex;
-                    }
-
-                    if (lowerIndex > 0)
-                    {
-                        parameter = argumentName.Substring(lowerIndex + 1).Trim();
-                        argumentName = argumentName.Substring(0, lowerIndex).Trim();
+                        parameter = argumentName.Substring(lowestIndex + 1).Trim();
+                        argumentName = argumentName.Substring(0, lowestIndex).Trim();
                     }
                 }
 

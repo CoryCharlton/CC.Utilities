@@ -30,6 +30,7 @@ namespace CC.Utilities.Rss
         public RssFeed(Uri uri)
         {
             Uri = uri;
+            UserAgent = string.Format("{0}/{1} (http://www.ccswe.com)", Application.ProductName, Application.ProductVersion);
             LoadRssFeed();
         }
         #endregion
@@ -63,6 +64,11 @@ namespace CC.Utilities.Rss
         /// The url
         /// </summary>
         public string Url { get { return Uri.AbsolutePath; } }
+
+        /// <summary>
+        /// The user-agent header to use. If set to null/string.Empty the user-agent header will not be added
+        /// </summary>
+        public string UserAgent { get; set; }
         #endregion
 
         #region Private Methods
@@ -72,7 +78,10 @@ namespace CC.Utilities.Rss
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    webClient.Headers.Add("user-agent", string.Format("{0}/{1} (http://www.ccswe.com)", Application.ProductName, Application.ProductVersion));
+                    if (!string.IsNullOrEmpty(UserAgent))
+                    {
+                        webClient.Headers.Add("user-agent", UserAgent);
+                    }
 
                     using (Stream stream = webClient.OpenRead(Uri))
                     {

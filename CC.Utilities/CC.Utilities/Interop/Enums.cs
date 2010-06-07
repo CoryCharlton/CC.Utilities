@@ -171,6 +171,8 @@ namespace CC.Utilities.Interop
     public enum WS: uint
     {
         CHILD = 0x40000000,
+        CLIPCHILDREN = 0x02000000,
+        VISIBLE = 0x10000000,
     }
     // ReSharper restore InconsistentNaming
 }
